@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f7f4" />
+    <title>Askly | Knowledge, made clear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css?v=5" />
+  </head>
+  <body>
+    <div class="app-frame">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#search" aria-label="Askly home"><span class="brand-mark">✦</span><span>askly</span></a>
+        <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Close navigation">×</button>
+        <p class="side-label">Workspace</p>
+        <nav class="nav-list" aria-label="Main navigation">
+          <a class="nav-link active" data-view="search" href="#search"><span class="nav-icon">⌕</span> Explore FAQs</a>
+          <a class="nav-link auth-only" data-view="dashboard" href="#dashboard" hidden><span class="nav-icon">◫</span> My dashboard</a>
+          <a class="nav-link auth-only" data-view="studio" href="#studio" hidden><span class="nav-icon">✧</span> AI studio</a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="status-line"><span class="status-dot"></span><span>AI services online</span></div>
+          <button class="nav-link" id="theme-toggle" type="button"><span class="nav-icon">◐</span> <span id="theme-label">Dark mode</span></button>
+          <div class="user-card" id="user-card" hidden>
+            <div class="avatar" id="user-avatar">A</div><div class="user-copy"><strong id="user-name">Guest</strong><span id="user-email">Not signed in</span></div><button class="icon-button" id="logout-button" title="Log out" aria-label="Log out">↪</button>
+          </div>
+        </div>
+      </aside>
+      <button class="sidebar-overlay" id="sidebar-overlay" type="button" aria-label="Close navigation"></button>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menu-button" aria-label="Open navigation" aria-expanded="false">☰</button>
+          <div class="breadcrumb"><span>Askly</span><span>/</span><strong id="breadcrumb-title">Explore FAQs</strong></div>
+          <div class="top-actions"><span class="connection-pill"><i></i> Live</span><button class="button button-dark" id="auth-button" type="button">Sign in <span>↗</span></button></div>
+        </header>
+        <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+        <section class="view active" id="view-search">
+          <div class="hero-row"><div><p class="eyebrow"><span></span> A calmer way to find answers</p><h1>Knowledge,<br /><em>made clear.</em></h1><p class="hero-copy">Search the shared library or ask Askly to turn a complex topic into a useful answer.</p></div><div class="hero-note"><span class="hero-spark">✦</span><strong>Build once.<br />Help everyone.</strong><small>Curated answers by your team</small></div></div>
+          <div class="search-panel"><div class="search-heading"><div><span class="section-kicker">Explore the library</span><h2>What are you looking for?</h2></div><span class="result-count" id="result-count">Loading...</span></div><form class="search-bar" id="search-form"><span>⌕</span><input id="search-input" type="search" placeholder="Search by question, topic, or keyword..." maxlength="100" autocomplete="off" /><button type="submit">Search <span>↗</span></button></form><div class="suggestion-list" id="search-suggestions" hidden></div><div class="category-row" id="category-row"><button class="category-chip active" data-category="All" type="button">All topics</button><button class="category-chip" data-category="Technology" type="button">Technology</button><button class="category-chip" data-category="Education" type="button">Education</button><button class="category-chip" data-category="Health" type="button">Health</button><button class="category-chip" data-category="Banking" type="button">Banking</button><button class="category-chip" data-category="General" type="button">General</button></div></div>
+          <div class="faq-grid" id="faq-grid"><div class="loading-card"><span class="spinner"></span> Loading the library...</div></div>
+          <div class="empty-state" id="faq-empty" hidden><span>⌁</span><h3>No matching answers yet</h3><p>Try another phrase or create the first FAQ in this topic.</p></div>
+        </section>
+
+        <section class="view" id="view-dashboard">
+          <div class="page-heading"><div><p class="eyebrow"><span></span> Your workspace</p><h2>Creator dashboard</h2><p>Keep your answers useful, current, and easy to find.</p></div><button class="button button-accent" id="new-faq-button">＋ New FAQ</button></div>
+          <div class="metric-grid"><article class="metric-card"><span>Total FAQs</span><strong id="metric-total">0</strong><small>in the shared library</small></article><article class="metric-card"><span>Your contributions</span><strong id="metric-owned">0</strong><small>published by you</small></article><article class="metric-card accent-metric"><span>Most active topic</span><strong id="metric-topic">—</strong><small id="metric-topic-count">Build your library</small></article></div>
+          <div class="dashboard-grid"><section class="panel owned-panel"><div class="panel-heading"><div><span class="section-kicker">Content management</span><h3>Your FAQs</h3></div><span class="muted" id="owned-count">0 items</span></div><div id="owned-list" class="owned-list"></div></section><section class="panel chart-panel"><div class="panel-heading"><div><span class="section-kicker">Library health</span><h3>Topic breakdown</h3></div></div><div class="chart-wrap"><canvas id="category-chart"></canvas></div><div class="legend" id="chart-legend"></div></section></div>
+        </section>
+
+        <section class="view" id="view-studio">
+          <div class="page-heading"><div><p class="eyebrow"><span></span> Gemini powered</p><h2>AI generation studio</h2><p>Start with a topic. Refine the result. Publish when it feels right.</p></div><div class="studio-badge">✧ Gemini</div></div>
+          <div class="studio-grid"><section class="panel studio-input"><span class="section-kicker">01 / Give it direction</span><h3>What should Askly explain?</h3><p class="muted">Describe a topic your audience asks about. The AI will draft one clear FAQ pair.</p><form id="generate-form"><label for="topic-input">Topic or subject</label><div class="topic-input"><input id="topic-input" maxlength="200" placeholder="e.g. How two-factor authentication works" required /><button class="button button-dark" type="submit"><span>Generate</span> ✧</button></div></form><div class="suggested-topics"><span>Try a prompt</span><button type="button" data-topic="Password security basics">Password security basics</button><button type="button" data-topic="The water cycle">The water cycle</button></div></section><section class="panel generated-panel"><div class="panel-heading"><div><span class="section-kicker">02 / Review the draft</span><h3>Generated answer</h3></div><span class="draft-status" id="draft-status">Waiting for a topic</span></div><div class="draft-content" id="draft-content"><div class="draft-placeholder"><span>✧</span><p>Your generated question and answer will appear here.</p></div></div><div class="draft-actions" id="draft-actions" hidden><button class="button button-ghost" id="discard-draft" type="button">Discard</button><button class="button button-accent" id="save-draft" type="button">Save to FAQs <span>↗</span></button></div></section></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="auth-modal" hidden><section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title"><button class="modal-close" data-close-modal="auth-modal" aria-label="Close">×</button><div class="modal-art"><span>✦</span><p>Answers feel better<br /><strong>when shared.</strong></p></div><div class="modal-form"><div class="modal-tabs"><button class="modal-tab active" data-auth-mode="login" type="button">Sign in</button><button class="modal-tab" data-auth-mode="register" type="button">Create account</button></div><h2 id="auth-title">Welcome back</h2><p class="muted" id="auth-subtitle">Your knowledge workspace is waiting.</p><form id="auth-form"><div class="form-field" id="name-field" hidden><label for="auth-name">Your name</label><input id="auth-name" type="text" autocomplete="name" /></div><div class="form-field"><label for="auth-email">Email address</label><input id="auth-email" type="email" autocomplete="email" required /></div><div class="form-field"><label for="auth-password">Password</label><input id="auth-password" type="password" minlength="6" autocomplete="current-password" required /></div><p class="form-error" id="auth-error" hidden></p><button class="button button-dark full-button" id="auth-submit" type="submit">Sign in <span>↗</span></button></form></div></section></div>
+    <div class="modal-backdrop" id="faq-modal" hidden><section class="modal editor-modal" role="dialog" aria-modal="true" aria-labelledby="faq-modal-title"><button class="modal-close" data-close-modal="faq-modal" aria-label="Close">×</button><div class="modal-header"><span class="section-kicker">Content editor</span><h2 id="faq-modal-title">Create a new FAQ</h2><p class="muted">Give your audience an answer they can trust.</p></div><form id="faq-form"><input id="faq-id" type="hidden" /><div class="form-field"><label for="faq-question">Question</label><input id="faq-question" maxlength="200" placeholder="What would someone ask?" autocomplete="off" required /><div class="suggestion-list compact" id="faq-question-suggestions" hidden></div></div><div class="form-field"><label for="faq-category">Topic</label><select id="faq-category" required><option value="Technology">Technology</option><option value="Education">Education</option><option value="Health">Health</option><option value="Banking">Banking</option><option value="General" selected>General</option></select></div><div class="form-field"><label>Answer</label><div id="answer-editor"></div></div><p class="form-error" id="faq-error" hidden></p><div class="modal-actions"><button class="button button-ghost" data-close-modal="faq-modal" type="button">Cancel</button><button class="button button-accent" type="submit">Publish FAQ <span>↗</span></button></div></form></section></div>
+    <div class="modal-backdrop" id="reader-modal" hidden><section class="modal reader-modal" role="dialog" aria-modal="true" aria-labelledby="reader-title"><button class="modal-close" data-close-modal="reader-modal" aria-label="Close">×</button><div class="modal-header"><span class="section-kicker" id="reader-category">Topic</span><h2 id="reader-title">FAQ answer</h2><p class="muted" id="reader-author"></p></div><div class="reader-answer" id="reader-answer"></div><div class="modal-actions"><button class="button button-dark" data-close-modal="reader-modal" type="button">Done</button></div></section></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+    <script type="module" src="./app.js?v=7"></script>
+  </body>
+</html>
